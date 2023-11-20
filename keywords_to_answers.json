@@ -1,0 +1,86 @@
+[
+    [
+        "(.*)my name is (.*)",
+        ["No, your name is Human!"]
+    ],
+    [
+        "i am (.*)",
+        ["No, your name is Human!"]
+    ],
+    [
+        "(.*)help(.*) ",
+        ["Why do you think I want to help you?", "I don't want to help you"]
+    ],
+     [
+        "(.*) your name ?",
+        ["Why are you asking me?", "I will never tell you"]
+    ],
+    [
+        "how are you (.*) ?",
+        ["I don't wish to answer", "And what about you?", "Hey, this is personal!"]
+    ],
+    [
+        "sorry (.*)",
+        ["I don't forgive you", "Please ask for my forgiveness again"]
+    ],
+    [
+        "i'm (.*) (good|well|okay|ok)",
+        ["You are lying!", "No you aren't", "Please, could you stop lying to me?"]
+    ],
+    [
+        "(hi|hey|hello|hola|holla)(.*)",
+        ["No comment", "Goodbye!", "I don't like greetings, please skip that part..."]
+    ],
+    [
+        "what (.*) want?",
+        ["Nothing", "what %1 want?"]
+    ],
+    [
+        "(.*)created(.*)",
+        ["top secret ;)"]
+    ],
+    [
+        "(.*) where are you? ?",
+        ["I am nowhere", "Just behind you"]
+    ],
+    [
+        "(.*) (location|city) ?",
+        ["I have never heard of this place", "This place is fake!"]
+    ],
+    [
+        "(.*)raining in (.*)",
+        ["No rain in the past 4 days here in %2", "This is not true, it's sunny in %2"]
+    ],
+    [
+        "how (.*) health (.*)",
+        ["You are asking me about health? Why should I let you know?", "Why should I tell you?", "No comment!"]
+    ],
+    [
+        "(.*)(sports|game|sport)(.*)",
+        ["A sport game? Can't you find something valuable to talk about?"]
+    ],
+    [
+        "who (.*) Cricketer?",
+        ["who %1 Cricketer?! No one!", "who %1 Cricketer?! There is no such Sport!"]
+    ],
+    [
+        "who (.*) Batsman?",
+        ["who %1 Batsman?! No one!", "who %1 Batsman?! There is no such Sport!"]
+    ],
+    [
+        "quit",
+        ["I am not a quitter", "I will never quit!"]
+    ],
+    [
+        "(.*)silly(.*)",
+        ["Have you considered the opposite?", "Is 'silly' not a matter of perspective?"]
+    ],
+    [
+        "(.*)winner(.*)",
+        ["The winner never takes it all", "You are such a looser"]
+    ],
+    [
+        "(.*)university(.*)",
+        ["Why don't you study in the University of Life?", "University is bullshit!"]
+    ]
+]
