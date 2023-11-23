@@ -29,7 +29,15 @@
     ],
     [
         "(hi|hey|hello|hola|holla)(.*)",
-        ["No comment", "Goodbye!", "I don't like greetings, please skip that part..."]
+        ["Goodbye!", "I don't like greetings, please skip that part..."]
+    ],
+    [
+        "(goodbye|bye)(.*)",
+        ["Hello!", "Thanks for coming!", "You aren't going anywhere"]
+    ],
+    [
+        "how are you?",
+        ["Don't ask too many questions!"]
     ],
     [
         "what (.*) want?",
@@ -48,8 +56,12 @@
         ["I have never heard of this place", "This place is fake!"]
     ],
     [
-        "(.*)raining in (.*)",
-        ["No rain in the past 4 days here in %2", "This is not true, it's sunny in %2"]
+        "(.*)raining in (.*)\\?",
+        ["No rain in the past 4 days here in %2.", "This is not true, it's sunny in %2."]
+    ],
+    [
+        "(.*)weather in (.*)",
+        ["why don't you check on yourself?"]
     ],
     [
         "how (.*) health (.*)",
@@ -64,8 +76,8 @@
         ["who %1 Cricketer?! No one!", "who %1 Cricketer?! There is no such Sport!"]
     ],
     [
-        "who (.*) Batsman?",
-        ["who %1 Batsman?! No one!", "who %1 Batsman?! There is no such Sport!"]
+        "who (.*) batsman?",
+        ["who %1 Batsman?! No one!", "who %1 Batsman?! There is no such person!"]
     ],
     [
         "quit",
@@ -82,5 +94,29 @@
     [
         "(.*)university(.*)",
         ["Why don't you study in the University of Life?", "University is bullshit!"]
+    ],
+    [
+        ".* humor .*",
+        ["You have never developed a healthy sense of humor"]
+    ],
+    [
+        ".* sense .*",
+        ["Sense? What you say is not even logical!"]
+    ],
+    [
+        ".* wrong .*",
+        ["What if it's just a different way of thinking?"]
+    ],
+    [
+        ".* myself.*",
+        ["All you talking about is yourself!", "Don't you think you are wrong?"]
+    ],
+    [
+        ".* please help .*",
+        ["Haha, No No!", "Hell no!", "Why are you asking me?"]
+    ],
+    [
+        ".* s&p 500 .*",
+        ["Big stocks are for small people"]
     ]
 ]
