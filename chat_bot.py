@@ -25,9 +25,9 @@ pattern_punctuation = re.compile(r'[ ,.?!]+')
 
 def conversation():
     timer.start()
+    print("Argument Clinic: You have 5 minutes to argue")
 
-    # while not timer.stop():
-    while True:
+    while not timer.stop():
         user_sentence = input("You: ")
         results = keywords(user_sentence)
         results *= 10
@@ -38,7 +38,7 @@ def conversation():
         if results:
             print("Argument Clinic:", random.choice(results))
         else:
-            print("Argument Clinic: No Comment!")
+            print("Argument Clinic:", random.choice(["No Comment!", "Can't you use your time in a better way?"]))
 
 
 def keywords(sentence):

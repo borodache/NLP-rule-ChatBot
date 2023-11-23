@@ -19,6 +19,7 @@ def start():
 
     start_time = time.perf_counter()
 
+
 def stop():
     """Stop the timer, and report the elapsed time"""
     global start_time
@@ -28,7 +29,7 @@ def stop():
     elapsed_time = time.perf_counter() - start_time
 
     if elapsed_time > 60 * minutes_to_measure:
-        print("ChatBot: Your time is up! GoodBye!!!")
+        print("Argument Clinic: Your time is up! GoodBye!!!")
         return True
 
     return False
