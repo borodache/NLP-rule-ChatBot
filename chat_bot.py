@@ -74,7 +74,7 @@ def logic(sentence):
 
     if new_sentence[-1] == '?':
         new_sentence2 = "I think you are asking the wrong question. The right one is: " + new_sentence
-        return [new_sentence, new_sentence, new_sentence, new_sentence, new_sentence, new_sentence, new_sentence2]
+        return [new_sentence] * 5 + [new_sentence2]
     else:
         return [new_sentence]
 
