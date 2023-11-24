@@ -101,6 +101,7 @@ def add_negative_word(sentence):
 def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
     # Split the sentence into words
     words = sentence.strip().split()
+    words = [word for word in words if re.match(r"\w+", word)]
     words_without_punctuation = pattern_punctuation.split(sentence.strip())
 
     # List of words that, when found, should be negated
@@ -116,11 +117,12 @@ def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
     f_changed = False
     for word, word_without_punctuation in zip(words, words_without_punctuation):
         # Check if the word is in the list of negatable words
-        if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
+        # if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
+        if word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
             # Negate the word
             sign_word = change_supporting_verbs_according_to_sign[word_without_punctuation.lower()]
-            if word_without_punctuation.lower() != 'no' and word_without_punctuation.lower() != 'yes':
-                f_changed = True
+            # if word_without_punctuation.lower() != 'no' and word_without_punctuation.lower() != 'yes':
+            f_changed = True
         else:
             # Keep the word as is
             sign_word = word_without_punctuation
