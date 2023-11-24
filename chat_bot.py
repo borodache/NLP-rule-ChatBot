@@ -11,7 +11,7 @@ reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it"
                                 "her": "her", "us": "you", "my": "your", "myself": "yourself", "yourself": "myself"}
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
-    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no"}
+    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
 supporting_verbs_from_negative_to_positive.update({"not": "", "never": "always"})
@@ -53,9 +53,9 @@ def keywords(sentence):
 
 
 def logic(sentence):
-    f_changed, new_sentence = sentence_from_negative_to_positive(sentence)
+    f_changed, new_sentence = sentence_change_sign(sentence)
     if not f_changed:
-        f_changed, new_sentence = sentence_from_positive_to_negative(sentence)
+        f_changed, new_sentence = sentence_change_sign(sentence, "positive_to_negative")
         if not f_changed:
             new_sentence = add_negative_word(new_sentence)
 
@@ -98,67 +98,41 @@ def add_negative_word(sentence):
         return " ".join(words)
 
 
-def sentence_from_negative_to_positive(sentence):
+def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
     # Split the sentence into words
     words = sentence.strip().split()
+    words_without_punctuation = pattern_punctuation.split(sentence.strip())
 
     # List of words that, when found, should be negated
     # Initialize the negated sentence
-    positive_sentence = []
+    changed_sentence = []
+
+    if sign == "negative_to_positive":
+        change_supporting_verbs_according_to_sign = supporting_verbs_from_negative_to_positive
+    elif sign == "positive_to_negative":
+        change_supporting_verbs_according_to_sign = supporting_verbs_from_positive_to_negative
 
     # Iterate through the words
-    f_positive = False
-    words_without_punctuation = pattern_punctuation.split(sentence.strip())
+    f_changed = False
     for word, word_without_punctuation in zip(words, words_without_punctuation):
         # Check if the word is in the list of negatable words
-        if not f_positive and word_without_punctuation.lower() in supporting_verbs_from_negative_to_positive:
+        if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
             # Negate the word
-            positive_word = supporting_verbs_from_negative_to_positive[word_without_punctuation.lower()]
-            if word_without_punctuation.lower() != 'no':
-                f_positive = True
+            sign_word = change_supporting_verbs_according_to_sign[word_without_punctuation.lower()]
+            if word_without_punctuation.lower() != 'no' and word_without_punctuation.lower() != 'yes':
+                f_changed = True
         else:
             # Keep the word as is
-            positive_word = word_without_punctuation
+            sign_word = word_without_punctuation
 
-        positive_word += word[len(word_without_punctuation):]
+        sign_word += word[len(word_without_punctuation):]
 
         # Add the negated word to the negated sentence
-        if positive_word:
-            positive_sentence.append(positive_word)
+        if sign_word:
+            changed_sentence.append(sign_word)
 
     # Join the words back into a sentence
-    return f_positive, " ".join(positive_sentence)
-
-
-def sentence_from_positive_to_negative(sentence):
-    # Split the sentence into words
-    words = sentence.strip().split()
-
-    # List of words that, when found, should be negated
-
-    # Initialize the negated sentence
-    negative_sentence = []
-
-    # Iterate through the words
-    f_negative = False
-    words_without_punctuation = pattern_punctuation.split(sentence.strip())
-    for word, word_without_punctuation in zip(words, words_without_punctuation):
-        # Check if the word is in the list of negatable words
-        if not f_negative and word_without_punctuation.lower() in supporting_verbs_from_positive_to_negative:
-            # Negate the word
-            negative_word = supporting_verbs_from_positive_to_negative[word_without_punctuation.lower()]
-            if word_without_punctuation.lower() != "yes":
-                f_negative = True
-        else:
-            # Keep the word as is
-            negative_word = word_without_punctuation
-
-        negative_word += word[len(word_without_punctuation):]
-        # Add the negated word to the negated sentence
-        negative_sentence.append(negative_word)
-
-    # Join the words back into a sentence
-    return f_negative, " ".join(negative_sentence)
+    return f_changed, " ".join(changed_sentence)
 
 
 def reflect(sentence):
