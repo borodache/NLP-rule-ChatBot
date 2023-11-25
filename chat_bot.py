@@ -122,7 +122,7 @@ def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
         # Check if the word is in the list of negatable words
         # if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
         if word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
-            # Negate the word
+            # change the word
             sign_word = change_supporting_verbs_according_to_sign[word_without_punctuation.lower()]
             # if word_without_punctuation.lower() != 'no' and word_without_punctuation.lower() != 'yes':
             f_changed = True
@@ -132,7 +132,7 @@ def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
 
         sign_word += word[len(word_without_punctuation):]
 
-        # Add the negated word to the negated sentence
+        # Add the changed word to the changed sentence
         if sign_word:
             changed_sentence.append(sign_word)
 
