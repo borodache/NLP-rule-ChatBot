@@ -11,8 +11,7 @@ reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it"
                                 "her": "her", "us": "you", "my": "your", "myself": "yourself", "yourself": "myself"}
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
-    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"
-    , "always": "never", "start": "stop"}
+    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
 supporting_verbs_from_negative_to_positive.update({"not": ""})
@@ -71,7 +70,7 @@ def logic(sentence):
     new_sentence = new_sentence.replace("am not you", "aren't you")
     new_sentence = new_sentence.replace("am you", "are you")
     new_sentence = re.sub(" I$", r" me", new_sentence)
-    new_sentence = re.sub(" I([,.?!]*)", r" me\1", new_sentence)
+    new_sentence = re.sub(" I([,.?!]+)", r" me\1", new_sentence)
 
     new_sentence = new_sentence[0].upper() + new_sentence[1:]
 
