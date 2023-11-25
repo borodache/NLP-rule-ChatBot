@@ -11,10 +11,11 @@ reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it"
                                 "her": "her", "us": "you", "my": "your", "myself": "yourself", "yourself": "myself"}
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
-    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"}
+    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"
+    , "always": "never", "start": "stop"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
-supporting_verbs_from_negative_to_positive.update({"not": "", "never": "always"})
+supporting_verbs_from_negative_to_positive.update({"not": ""})
 with open(".\\keywords_to_answers.json", "r") as f:
     keywords_to_answers = json.load(f)
 
@@ -33,18 +34,19 @@ def conversation():
         results *= 10
         result_logic = logic(user_sentence)
         for rl in result_logic:
-            if rl.lower() != user_sentence.lower():
+            if rl.strip().lower() != user_sentence.strip().lower():
                 results.append(rl)
         if results:
             print("Argument Clinic:", random.choice(results))
         else:
-            print("Argument Clinic:", random.choice(["No Comment!", "Can't you use your time in a better way?"]))
+            print("Argument Clinic:", random.choice(["Haven't I told you before?", "I have already told you once",
+                                                     "Can't you use your time in a better way?"]))
 
 
 def keywords(sentence):
     rets = []
     for keyword_regex, answers in keywords_to_answers.items():
-        if re.search(keyword_regex, sentence.lower()):
+        if re.search(keyword_regex, sentence.strip().lower()):
             for answer in answers:
                 answer = transform_answer_according_to_keyword(keyword_regex, sentence, answer)
                 rets.append(answer)
@@ -68,7 +70,8 @@ def logic(sentence):
     new_sentence = new_sentence.replace("you am", "you are")
     new_sentence = new_sentence.replace("am not you", "aren't you")
     new_sentence = new_sentence.replace("am you", "are you")
-    new_sentence = re.sub(" I([ ,.?!]*)$", r" me\1", new_sentence)
+    new_sentence = re.sub(" I$", r" me", new_sentence)
+    new_sentence = re.sub(" I([,.?!]*)", r" me\1", new_sentence)
 
     new_sentence = new_sentence[0].upper() + new_sentence[1:]
 

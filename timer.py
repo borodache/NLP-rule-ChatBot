@@ -9,7 +9,8 @@ import time
 #         self.minutes_to_measure = minutes
 
 start_time = None
-minutes_to_measure = 1
+minutes_to_measure = 5
+
 
 def start():
     """Start a new timer"""

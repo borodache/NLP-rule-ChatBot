@@ -28,7 +28,7 @@
         ["You are lying!", "No you aren't", "Please, could you stop lying to me?"]
     ],
     [
-        "(hi|hey|hello|hola|holla)(.*)",
+        "^(hi|hey|hello|hola|holla)(.*)",
         ["Goodbye!", "I don't like greetings, please skip that part..."]
     ],
     [
