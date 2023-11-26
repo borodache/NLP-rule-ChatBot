@@ -8,7 +8,8 @@ import json
 
 reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it", "we": "you",
                                 "they": "they", "you": "I", "me": "you", "him": "him",
-                                "her": "her", "us": "you", "my": "your", "myself": "yourself", "yourself": "myself"}
+                                "her": "her", "us": "you", "my": "your", "myself": "yourself", "yourself": "myself",
+                                "mine": "yours", "yours": "mine"}
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
     "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"}
@@ -68,12 +69,12 @@ def logic(sentence):
     if not f_changed:
         f_changed, new_sentence = sentence_change_sign(sentence, "positive_to_negative")
         if not f_changed:
-            new_sentence = add_negative_word(new_sentence)
+            f_changed, new_sentence = add_negative_word(new_sentence)
 
     new_sentence = reflect(new_sentence)
     new_sentence = new_sentence[0].upper() + new_sentence[1:]
 
-    if new_sentence[-1] == '?':
+    if new_sentence[-1] == '?' and f_changed:
         new_sentence2 = "I think you are asking the wrong question. The right one is: " + new_sentence
         return [new_sentence, new_sentence2]
     else:
@@ -94,9 +95,9 @@ def add_negative_word(sentence):
             break
 
     if additional_word:
-        return " ".join(words[:idx + 1] + [additional_word] + words[idx + 1:])
+        return True, " ".join(words[:idx + 1] + [additional_word] + words[idx + 1:])
     else:
-        return " ".join(words)
+        return False, " ".join(words)
 
 
 def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
