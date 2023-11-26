@@ -1,5 +1,29 @@
 [
     [
+        "(.*) always (.*)",
+        ["%1 never %2"]
+    ],
+    [
+        "(.*) never (.*)",
+        ["%1 always %2"]
+    ],
+    [
+        "(.*) love (.*)",
+        ["%1 hate %2"]
+    ],
+    [
+        "(.*) hate (.*)",
+        ["%1 love %2"]
+    ],
+    [
+        "^stop (.*)",
+        ["you will start %1"]
+    ],
+    [
+        "^start (.*)",
+        ["you will stop %1"]
+    ],
+    [
         "(.*)my name is (.*)",
         ["No, your name is Human!"]
     ],

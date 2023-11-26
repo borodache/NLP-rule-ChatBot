@@ -30,13 +30,23 @@ def conversation():
     while not timer.stop():
         user_sentence = input("You: ")
         results = keywords(user_sentence)
-        results *= 10
-        result_logic = logic(user_sentence)
-        for rl in result_logic:
+
+        for idx, result in enumerate(results):
+            if re.search("always", result) or re.search("never", result) or re.search("stop", result) \
+                    or re.search("start", result) or re.search("love", result) or re.search("hate", result):
+                result = reflect(result)
+                results[idx] = result
+
+        if not results:
+            results = logic(user_sentence)
+
+        results_final = []
+        for rl in results:
             if rl.strip().lower() != user_sentence.strip().lower():
-                results.append(rl)
-        if results:
-            print("Argument Clinic:", random.choice(results))
+                results_final.append(rl)
+
+        if results_final:
+            print("Argument Clinic:", random.choice(results_final))
         else:
             print("Argument Clinic:", random.choice(["Haven't I told you before?", "I have already told you once",
                                                      "Can't you use your time in a better way?"]))
@@ -61,22 +71,11 @@ def logic(sentence):
             new_sentence = add_negative_word(new_sentence)
 
     new_sentence = reflect(new_sentence)
-    new_sentence = new_sentence.replace("I aren't", "I am not")
-    new_sentence = new_sentence.replace("aren't I", "isn't I")
-    new_sentence = new_sentence.replace("I are", "I am")
-    new_sentence = new_sentence.replace("are I", "am I")
-    new_sentence = new_sentence.replace("you am not", "you aren't")
-    new_sentence = new_sentence.replace("you am", "you are")
-    new_sentence = new_sentence.replace("am not you", "aren't you")
-    new_sentence = new_sentence.replace("am you", "are you")
-    new_sentence = re.sub(" I$", r" me", new_sentence)
-    new_sentence = re.sub(" I([,.?!]+)", r" me\1", new_sentence)
-
     new_sentence = new_sentence[0].upper() + new_sentence[1:]
 
     if new_sentence[-1] == '?':
         new_sentence2 = "I think you are asking the wrong question. The right one is: " + new_sentence
-        return [new_sentence] * 5 + [new_sentence2]
+        return [new_sentence, new_sentence2]
     else:
         return [new_sentence]
 
@@ -165,7 +164,19 @@ def reflect(sentence):
         reflected_sentence.append(reflected_word)
 
     # Join the words back into a sentence
-    return " ".join(reflected_sentence)
+    new_sentence = " ".join(reflected_sentence)
+    new_sentence = new_sentence.replace("I aren't", "I am not")
+    new_sentence = new_sentence.replace("aren't I", "isn't I")
+    new_sentence = new_sentence.replace("I are", "I am")
+    new_sentence = new_sentence.replace("are I", "am I")
+    new_sentence = new_sentence.replace("you am not", "you aren't")
+    new_sentence = new_sentence.replace("you am", "you are")
+    new_sentence = new_sentence.replace("am not you", "aren't you")
+    new_sentence = new_sentence.replace("am you", "are you")
+    new_sentence = re.sub(" I$", r" me", new_sentence)
+    new_sentence = re.sub(" I([,.?!]+)", r" me\1", new_sentence)
+
+    return new_sentence
 
 
 conversation()
