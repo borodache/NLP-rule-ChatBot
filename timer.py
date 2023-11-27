@@ -1,13 +1,5 @@
 import time
 
-# class TimerError(Exception):
-#     """A custom exception used to report errors in use of Timer class"""
-
-# class Timer:
-#     def __init__(self, minutes: int):
-#         self._start_time = None
-#         self.minutes_to_measure = minutes
-
 start_time = None
 minutes_to_measure = 5
 
@@ -22,7 +14,8 @@ def start():
 
 
 def stop():
-    """Stop the timer, and report the elapsed time"""
+    """Stop the timer if the elapsed time (in seconds) is bigger then the provided maximum time (minutes_to_measure
+    times 60 seconds)"""
     global start_time
     if start_time is None:
         raise Exception(f"Timer is not running. Use .start() to start it")

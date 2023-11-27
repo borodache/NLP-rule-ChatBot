@@ -12,7 +12,7 @@ reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it"
                                 "mine": "yours", "yours": "mine"}
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
-    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't",
+     "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't",
      "could": "couldn't", "did": "didn't"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
@@ -24,8 +24,19 @@ with open(".\\keywords_to_answers.json", "r") as f:
 keywords_to_answers = {keyword.lower(): answers for keyword, answers in keywords_to_answers}
 pattern_punctuation = re.compile(r'[ ,.?!]+')
 
+common_mistakes_correction = {"I aren't": "I am not", "aren't I": "isn't I", "I are": "I am", "are I": "am I",
+                              "you am not": "you aren't", "you am": "you are", "am not you": "aren't you",
+                              "am you": "are you"}
+
 
 def conversation():
+    """
+    This function is the actually the main function in this file and in this whole project, it runs the bot and the
+    user's talking turns one after another. At first it searchs for a keyword, if it found it will give one of the
+    answers from the keywords, otherwise it will use logic (convert negative to positive or the other way around),
+    If the conversion don't do anything, it will return one of the default arguments it has.
+    :return: No return (void - None)
+    """
     timer.start()
     print("Argument Clinic: You have 5 minutes to argue")
 
@@ -55,6 +66,13 @@ def conversation():
 
 
 def keywords(sentence):
+    """
+    find all answers for user's input according to the keywords in the json file.
+    for providing an answer it runs the utils.transform_answer_according_to_keyword function in order to substitute
+    groups matched in the regex.
+    :param sentence: user's input
+    :return: a list of possible answers
+    """
     rets = []
     for keyword_regex, answers in keywords_to_answers.items():
         if re.search(keyword_regex, sentence.strip().lower()):
@@ -66,7 +84,18 @@ def keywords(sentence):
 
 
 def logic(sentence):
-    f_changed, new_sentence = sentence_change_sign(sentence)
+    """
+    Since the rules in the English language is not having double "no", we first start by checking if we can change the
+    sentence from negative to positive. If there was no change it means the sentence is positive and we should turn it
+    into negative.
+    If that had failed to, it's only since the sentence is positive but have no matching supporting verbs,
+    then we add a negative supporting verb after a personal pronouns.
+
+
+    :param sentence: user's input
+    :return: changed sentiment answer of the chat bot
+    """
+    f_changed, new_sentence = sentence_change_sign(sentence, "negative_to_positive")
     if not f_changed:
         f_changed, new_sentence = sentence_change_sign(sentence, "positive_to_negative")
         if not f_changed:
@@ -82,26 +111,15 @@ def logic(sentence):
         return [new_sentence]
 
 
-def add_negative_word(sentence):
-    words = sentence.strip().split()
+def sentence_change_sign(sentence, sign):
+    """
+    changing the sentiment of the sentence to the other way around (positive -> negative or negative -> positive)
 
-    additional_word = None
-    words_without_punctuation = pattern_punctuation.split(sentence.strip())
-    for idx, (word, word_without_punctuation) in enumerate(zip(words, words_without_punctuation)):
-        if word_without_punctuation.lower() in reflection_personal_pronouns:
-            if word_without_punctuation.lower() in {"he", "she", "it"}:
-                additional_word = "doesn't"
-            else:
-                additional_word = "don't"
-            break
-
-    if additional_word:
-        return True, " ".join(words[:idx + 1] + [additional_word] + words[idx + 1:])
-    else:
-        return False, " ".join(words)
-
-
-def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
+    :param sentence: user's input
+    :param sign: shows direction of change sentiment, either "negative_to_positive" or  "positive_to_negative"
+    :return: changed sentiment bot answer (take into consideration that reflection of the personal pronouns should be
+    done later)
+    """
     # Split the sentence into words
     words = sentence.strip().split()
     words = [word for word in words if re.match(r"\w+", word)]
@@ -119,7 +137,7 @@ def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
     # Iterate through the words
     f_changed = False
     for word, word_without_punctuation in zip(words, words_without_punctuation):
-        # Check if the word is in the list of negatable words
+        # Check if the word is in the list of changing supporting verbs words
         # if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
         if word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
             # change the word
@@ -140,45 +158,72 @@ def sentence_change_sign(sentence, sign: str = "negative_to_positive"):
     return f_changed, " ".join(changed_sentence)
 
 
+def add_negative_word(sentence):
+    """
+    This function is called only if "sentence_change_sign" function failed for both direction (negative -> positive and
+    positive -> negative). It adds the relevant supporting verb according to the personal pronoun.
+
+    :param sentence: user's input
+    :return: answer of bot with additional supporting verb
+    """
+    words = sentence.strip().split()
+
+    additional_supporting_verb = None
+    words_without_punctuation = pattern_punctuation.split(sentence.strip())
+    for idx, (word, word_without_punctuation) in enumerate(zip(words, words_without_punctuation)):
+        if word_without_punctuation.lower() in reflection_personal_pronouns:
+            if word_without_punctuation.lower() in {"he", "she", "it"}:
+                additional_supporting_verb = "doesn't"
+            else:
+                additional_supporting_verb = "don't"
+            break
+
+    if additional_supporting_verb:
+        return True, " ".join(words[:idx + 1] + [additional_supporting_verb] + words[idx + 1:])
+    else:
+        return False, " ".join(words)
+
+
 def reflect(sentence):
+    """
+
+    :param sentence: user's parsed input after change of sentiment
+    :return: ChatBot final answer after change of sentiment (done in previous called functions) and reflected personal
+    pronouns (for example: "you" -> "I", "I" -> "you", etc.)
+    """
     # Split the sentence into words
     words = sentence.strip().split()
 
-    # List of words that, when found, should be negated
-
-    # Initialize the negated sentence
+    # Initialize the reflected sentence
     reflected_sentence = []
 
     # Iterate through the words
     words_without_punctuation = pattern_punctuation.split(sentence.strip())
     for word, word_without_punctuation in zip(words, words_without_punctuation):
-        # Check if the word is in the list of negatable words
+        # Check if the word is in the list of reflectional words
         if word_without_punctuation.lower() in reflection_personal_pronouns:
-            # Negate the word
+            # Reflect the word
             reflected_word = reflection_personal_pronouns[word_without_punctuation.lower()]
         else:
             # Keep the word as is
             reflected_word = word_without_punctuation
 
+        # add the punctuation after the word
         reflected_word += word[len(word_without_punctuation):]
 
-        # Add the negated word to the negated sentence
+        # Add the reflected word to the reflected sentence
         reflected_sentence.append(reflected_word)
 
     # Join the words back into a sentence
     new_sentence = " ".join(reflected_sentence)
-    new_sentence = new_sentence.replace("I aren't", "I am not")
-    new_sentence = new_sentence.replace("aren't I", "isn't I")
-    new_sentence = new_sentence.replace("I are", "I am")
-    new_sentence = new_sentence.replace("are I", "am I")
-    new_sentence = new_sentence.replace("you am not", "you aren't")
-    new_sentence = new_sentence.replace("you am", "you are")
-    new_sentence = new_sentence.replace("am not you", "aren't you")
-    new_sentence = new_sentence.replace("am you", "are you")
+    # change common mistakes of mismatch between personal pronoun and additional verb
+    for mistake, correction in common_mistakes_correction.items():
+        new_sentence = new_sentence.replace(mistake, correction)
     new_sentence = re.sub(" I$", r" me", new_sentence)
     new_sentence = re.sub(" I([,.?!]+)", r" me\1", new_sentence)
 
     return new_sentence
 
 
-conversation()
+if __name__ == "__main__":
+    conversation()

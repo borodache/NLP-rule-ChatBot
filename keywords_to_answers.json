@@ -1,5 +1,13 @@
 [
     [
+        "why not(.*)",
+        ["why yes%1"]
+    ],
+    [
+        "why not (.*)",
+        ["why should you %1"]
+    ],
+    [
         "(.*) always (.*)",
         ["%1 never %2"]
     ],
@@ -57,7 +65,7 @@
     ],
     [
         "(goodbye|bye)(.*)",
-        ["Hello!", "Thanks for coming!", "You aren't going anywhere"]
+        ["Hello!", "You aren't going anywhere"]
     ],
     [
         "how are you?",
@@ -141,6 +149,6 @@
     ],
     [
         ".* s&p 500 .*",
-        ["Big stocks are for small people"]
+        ["Big stocks are for small people!"]
     ]
 ]
