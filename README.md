@@ -1,7 +1,7 @@
 # NLP-rule-ChatBot
 
 Introduction
-The Python Argument Clinic will be an interactive program inspired by the Monty Python "Argument Clinic" sketch. 
+The Python Argument Clinic will be an interactive program inspired by the Monty Python "Argument Clinic" sketch (https://www.youtube.com/watch?v=uLlv_aZjHXc). 
 This project aims to create a playful command-line application where users can have a mock argument with an automated response system.
 This project is a basic Python programming practice project. The NLP part here isn't the most crucial here, but basically it imitates how chatbots were built in the very beginning of NLP (50 years ago). This ChatBot works in the same way as the Argument Clinic in Monty Python, and it's target is to make an argument...
 
@@ -17,4 +17,5 @@ groups substitutes in the user's input, with its value in the ChatBot answer
 6. requirements.txt - the package you should install if you want to work with my project
 
 ## How to run?
-clone the repository for your local computer, and run the streamlit run main.py file.
+1. clone the repository for your local computer, and run the streamlit run main.py file.
+1. or simply use the streamlit deployed model here: https://nlp-rule-chatbot-borodache.streamlit.app/
