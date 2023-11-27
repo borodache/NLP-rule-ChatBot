@@ -159,10 +159,12 @@ def sentence_change_sign(sentence, sign):
     for word, word_without_punctuation in zip(words, words_without_punctuation):
         # Check if the word is in the list of changing supporting verbs words
         # if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
-        if word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
+        if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
             # change the word
             sign_word = change_supporting_verbs_according_to_sign[word_without_punctuation.lower()]
-            f_changed = True
+            if word_without_punctuation.lower() != 'yes' and word_without_punctuation.lower() != 'no' \
+                    and word_without_punctuation.lower() != 'not':
+                f_changed = True
         else:
             # Keep the word as is
             sign_word = word_without_punctuation
