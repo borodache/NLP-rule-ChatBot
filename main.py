@@ -142,12 +142,12 @@ def sentence_change_sign(sentence, sign):
         if word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
             # change the word
             sign_word = change_supporting_verbs_according_to_sign[word_without_punctuation.lower()]
-            # if word_without_punctuation.lower() != 'no' and word_without_punctuation.lower() != 'yes':
             f_changed = True
         else:
             # Keep the word as is
             sign_word = word_without_punctuation
 
+        # add the punctuation after the word
         sign_word += word[len(word_without_punctuation):]
 
         # Add the changed word to the changed sentence
