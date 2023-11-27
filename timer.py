@@ -1,14 +1,17 @@
+from constants import c_minutes_to_measure
+
+import streamlit as st
 import time
 
 start_time = None
-minutes_to_measure = 5
 
 
 def start():
     """Start a new timer"""
     global start_time
     if start_time is not None:
-        raise Exception(f"Timer is running. Use .stop() to stop it")
+        # raise Exception(f"Timer is running. Use .stop() to stop it")
+        return
 
     start_time = time.perf_counter()
 
@@ -22,8 +25,10 @@ def stop():
 
     elapsed_time = time.perf_counter() - start_time
 
-    if elapsed_time > 60 * minutes_to_measure:
-        print("Argument Clinic: Your time is up! GoodBye!!!")
+    if elapsed_time > 60 * c_minutes_to_measure:
+        # print("Argument Clinic: Your time is up! GoodBye!!!")
+        start_time = None
+        st.text("Argument Clinic: Your time is up! GoodBye!!!")
         return True
 
     return False

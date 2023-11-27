@@ -1,9 +1,12 @@
-import timer
 from utils import transform_answer_according_to_keyword
+import timer
+from constants import c_write_here, c_minutes_to_measure
 
+import streamlit as st
 import random
 import re
 import json
+import pathlib
 
 
 reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it", "we": "you",
@@ -13,56 +16,73 @@ reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it"
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
      "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't",
-     "could": "couldn't", "did": "didn't"}
+     "could": "couldn't", "did": "didn't", "should": "shouldn't", "would": "wouldn't"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
 supporting_verbs_from_negative_to_positive.update({"not": ""})
-with open(".\\keywords_to_answers.json", "r") as f:
-    keywords_to_answers = json.load(f)
 
-# keywords_to_answers = {re.compile(keyword.lower()): answers for keyword, answers in keywords_to_answers}
+keywords_to_answers_file = pathlib.Path("./keywords_to_answers.json")
+with open(keywords_to_answers_file.joinpath(), "r") as f_keywords_to_answers:
+    keywords_to_answers = json.load(f_keywords_to_answers)
 keywords_to_answers = {keyword.lower(): answers for keyword, answers in keywords_to_answers}
+
 pattern_punctuation = re.compile(r'[ ,.?!]+')
 
 common_mistakes_correction = {"I aren't": "I am not", "aren't I": "isn't I", "I are": "I am", "are I": "am I",
                               "you am not": "you aren't", "you am": "you are", "am not you": "aren't you",
                               "am you": "are you"}
 
+key_for_streamlit = 0
+
 
 def conversation():
     """
-    This function is the actually the main function in this file and in this whole project, it runs the bot and the
+    This function is actually the main function in this file and in the whole project, it runs the bot and the
     user's talking turns one after another. At first it searchs for a keyword, if it found it will give one of the
     answers from the keywords, otherwise it will use logic (convert negative to positive or the other way around),
     If the conversion don't do anything, it will return one of the default arguments it has.
     :return: No return (void - None)
     """
+    # print("Argument Clinic: You have 5 minutes to argue")
+    st.write(f"Argument Clinic: You have {c_minutes_to_measure} minutes to argue")
     timer.start()
-    print("Argument Clinic: You have 5 minutes to argue")
+    global key_for_streamlit
+    user_sentence = None
 
-    while not timer.stop():
-        user_sentence = input("You: ")
-        results = keywords(user_sentence)
-
-        for idx, result in enumerate(results):
-            if re.search("always", result) or re.search("never", result) or re.search("stop", result) \
-                    or re.search("start", result) or re.search("love", result) or re.search("hate", result):
-                result = reflect(result)
-                results[idx] = result
-
-        if not results:
-            results = logic(user_sentence)
-
-        results_final = []
-        for rl in results:
-            if rl.strip().lower() != user_sentence.strip().lower():
-                results_final.append(rl)
-
-        if results_final:
-            print("Argument Clinic:", random.choice(results_final))
+    if timer.stop():
+        return
+    else:
+        if user_sentence is None:
+            user_sentence = st.text_input("You: ", placeholder=c_write_here, key=key_for_streamlit)  # , value="", max_chars=None, key="abc", type="default")
         else:
-            print("Argument Clinic:", random.choice(["Haven't I told you before?", "I have already told you once",
-                                                     "Can't you use your time in a better way?"]))
+            key_for_streamlit += 1
+
+        if len(user_sentence) > 0:
+            results = keywords(user_sentence)
+
+            for idx, result in enumerate(results):
+                if re.search("always", result) or re.search("never", result) or re.search("stop", result) \
+                        or re.search("start", result) or re.search("love", result) or re.search("hate", result):
+                    result = reflect(result)
+                    results[idx] = result
+
+            if not results:
+                results = logic(user_sentence)
+
+            results_final = []
+            for rl in results:
+                if rl.strip().lower() != user_sentence.strip().lower():
+                    results_final.append(rl)
+
+            if results_final:
+                # print("Argument Clinic:", random.choice(results_final))
+                st.text(f"Argument Clinic: {random.choice(results_final)}")
+            else:
+                # print("Argument Clinic:", random.choice(["Haven't I told you before?", "I have already told you once",
+                #                                          "Can't you use your time in a better way?"]))
+                st.text(f"Argument Clinic: {random.choice(['Have not I told you before?', 'I have already told you once', 'Cannot you use your time in a better way?'])}")
+
+            user_sentence = None
 
 
 def keywords(sentence):

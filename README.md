@@ -13,6 +13,8 @@ answers.
 3. timer.py - A file that measures the conversation lasts for only 5 minutes. 
 4. utils.py - A utils file, contains only one function, a helper function to the keywords_to_answers.json, it swaps 
 groups substitutes in the user's input, with its value in the ChatBot answer
+5. constants.py - a file with 2 constants used in the program
+6. requirements.txt - the package you should install if you want to work with my project
 
 ## How to run?
-clone the repository for your local computer, and run the main.py file.
+clone the repository for your local computer, and run the streamlit run main.py file.
