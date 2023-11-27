@@ -12,7 +12,7 @@ answers.
 2. main.py - the file that should be run, it is the file that makes the ChatBot conversation
 3. timer.py - A file that measures the conversation lasts for only 5 minutes. 
 4. utils.py - A utils file, contains only one function, a helper function to the keywords_to_answers.json, it swaps 
-groups matched in the user's input, with its value in the ChatBot answer
+groups substitutes in the user's input, with its value in the ChatBot answer
 
 ## How to run?
 clone the repository for your local computer, and run the main.py file.
