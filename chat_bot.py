@@ -12,7 +12,8 @@ reflection_personal_pronouns = {"i": "you", "he": "he", "she": "she", "it": "it"
                                 "mine": "yours", "yours": "mine"}
 supporting_verbs_from_positive_to_negative = \
     {"is": "isn't", "are": "aren't", "am": "am not", "was": "wasn't", "were": "weren't", "has": "hasn't",
-    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't", "could": "couldn't"}
+    "have": "haven't", "had": "hadn't", "will": "won't", "do": "don't", "yes": "no", "can": "can't",
+     "could": "couldn't", "did": "didn't"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
 supporting_verbs_from_negative_to_positive.update({"not": ""})
