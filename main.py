@@ -125,10 +125,6 @@ def logic(sentence):
         new_sentence = reflect(new_sentence)
         new_sentence = new_sentence[0].upper() + new_sentence[1:]
 
-        # if new_sentence[-1] == '?' and f_changed:
-        #     new_sentence2 = "I think you are asking the wrong question. The right one is: " + new_sentence
-        #     return [new_sentence, new_sentence2]
-        # else:
         return [new_sentence]
     else:
         return []
