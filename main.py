@@ -20,7 +20,7 @@ supporting_verbs_from_positive_to_negative = \
      "could": "couldn't", "did": "didn't", "should": "shouldn't", "would": "wouldn't"}
 
 supporting_verbs_from_negative_to_positive = {val: key for key, val in supporting_verbs_from_positive_to_negative.items()}
-supporting_verbs_from_negative_to_positive.update({"not": ""})
+supporting_verbs_from_negative_to_positive.update({"not": "", "cannot": "can"})
 
 keywords_to_answers_file = pathlib.Path("./keywords_to_answers.json")
 with open(keywords_to_answers_file.joinpath(), "r") as f_keywords_to_answers:
