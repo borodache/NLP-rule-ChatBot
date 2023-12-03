@@ -2,6 +2,7 @@ from utils import transform_answer_according_to_keyword
 import timer
 from constants import c_write_here, c_minutes_to_measure
 
+from copy import copy
 import streamlit as st
 import random
 import re
@@ -161,8 +162,7 @@ def sentence_change_sign(sentence, sign):
         if not f_changed and word_without_punctuation.lower() in change_supporting_verbs_according_to_sign:
             # change the word
             sign_word = change_supporting_verbs_according_to_sign[word_without_punctuation.lower()]
-            if word_without_punctuation.lower() != 'yes' and word_without_punctuation.lower() != 'no' \
-                    and word_without_punctuation.lower() != 'not':
+            if word_without_punctuation.lower() != 'yes' and word_without_punctuation.lower() != 'no':
                 f_changed = True
         else:
             # Keep the word as is
@@ -238,8 +238,11 @@ def reflect(sentence):
     # Join the words back into a sentence
     new_sentence = " ".join(reflected_sentence)
     # change common mistakes of mismatch between personal pronoun and additional verb
+    new_sentence_org = copy(new_sentence)
     for mistake, correction in common_mistakes_correction.items():
         new_sentence = new_sentence.replace(mistake, correction)
+        if new_sentence != new_sentence_org:
+            break
     new_sentence = re.sub(" I$", r" me", new_sentence)
     new_sentence = re.sub(" I([,.?!]+)", r" me\1", new_sentence)
 
