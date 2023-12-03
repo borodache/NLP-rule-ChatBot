@@ -121,14 +121,17 @@ def logic(sentence):
         if not f_changed:
             f_changed, new_sentence = add_negative_word(new_sentence)
 
-    new_sentence = reflect(new_sentence)
-    new_sentence = new_sentence[0].upper() + new_sentence[1:]
+    if f_changed:
+        new_sentence = reflect(new_sentence)
+        new_sentence = new_sentence[0].upper() + new_sentence[1:]
 
-    if new_sentence[-1] == '?' and f_changed:
-        new_sentence2 = "I think you are asking the wrong question. The right one is: " + new_sentence
-        return [new_sentence, new_sentence2]
-    else:
+        # if new_sentence[-1] == '?' and f_changed:
+        #     new_sentence2 = "I think you are asking the wrong question. The right one is: " + new_sentence
+        #     return [new_sentence, new_sentence2]
+        # else:
         return [new_sentence]
+    else:
+        return []
 
 
 def sentence_change_sign(sentence, sign):
@@ -200,7 +203,7 @@ def add_negative_word(sentence):
                 additional_supporting_verb = "don't"
             break
 
-    if additional_supporting_verb:
+    if additional_supporting_verb and idx < len(words) - 1:
         return True, " ".join(words[:idx + 1] + [additional_supporting_verb] + words[idx + 1:])
     else:
         return False, " ".join(words)
