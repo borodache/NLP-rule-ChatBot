@@ -17,5 +17,5 @@ groups substitutes in the user's input, with its value in the ChatBot answer
 6. requirements.txt - the package you should install if you want to work with my project
 
 ## How to run?
-1. clone the repository for your local computer, and run the streamlit run main.py file.
+1. clone the repository for your local computer, and run the "streamlit run main.py" command from the prompt.
 1. or simply use the streamlit deployed model here: https://nlp-rule-chatbot-borodache.streamlit.app/
